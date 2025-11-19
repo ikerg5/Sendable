@@ -9,19 +9,22 @@ import UIKit
 
 // MARK: - Post Data Model
 struct Post: Codable {
-    let id = UUID()
+    let id: UUID
     let imageData: Data
     let level: String
     let notes: String
     let attempts: Int
     let dateCreated: Date
+    let username: String
     
-    init(image: UIImage, level: String, notes: String, attempts: Int) {
+    init(image: UIImage, level: String, notes: String, attempts: Int, username: String = "Anonymous") {
+        self.id = UUID()
         self.imageData = image.jpegData(compressionQuality: 0.8) ?? Data()
         self.level = level
         self.notes = notes
         self.attempts = attempts
         self.dateCreated = Date()
+        self.username = username
     }
     
     var image: UIImage? {
