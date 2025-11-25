@@ -11,12 +11,62 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        window = UIWindow(windowScene: windowScene)
+        
+        // Create the main tab bar controller
+        let tabBarController = createMainTabBarController()
+        
+        window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
+    }
+    
+    private func createMainTabBarController() -> UITabBarController {
+        let tabBarController = UITabBarController()
+        
+        // Create Feed tab
+        let feedViewController = FeedViewController()
+        let feedNavController = UINavigationController(rootViewController: feedViewController)
+        feedNavController.tabBarItem = UITabBarItem(
+            title: "Feed", 
+            image: UIImage(systemName: "house"), 
+            selectedImage: UIImage(systemName: "house.fill")
+        )
+        feedViewController.title = "Feed"
+        
+        // Create Post tab
+        let postViewController = PostViewController()
+        let postNavController = UINavigationController(rootViewController: postViewController)
+        postNavController.tabBarItem = UITabBarItem(
+            title: "Post", 
+            image: UIImage(systemName: "plus.circle"), 
+            selectedImage: UIImage(systemName: "plus.circle.fill")
+        )
+        postViewController.title = "New Post"
+        
+        // Create Profile tab
+        let profileViewController = ProfileViewController()
+        let profileNavController = UINavigationController(rootViewController: profileViewController)
+        profileNavController.tabBarItem = UITabBarItem(
+            title: "Profile", 
+            image: UIImage(systemName: "person"), 
+            selectedImage: UIImage(systemName: "person.fill")
+        )
+        profileViewController.title = "My Posts"
+        
+        tabBarController.viewControllers = [
+            feedNavController,
+            postNavController,
+            profileNavController
+        ]
+        
+        // Customize tab bar appearance
+        tabBarController.tabBar.tintColor = .systemBlue
+        tabBarController.tabBar.backgroundColor = .systemBackground
+        
+        return tabBarController
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
